@@ -7,6 +7,13 @@ terraform {
   }
 
   required_version = ">= 1.3.0"
+  backend "s3" {
+    bucket         = "terraform-state-hydro"
+    key            = "global/s3/terraform.tfstate"
+    region         = "ap-south-1"
+    dynamodb_table = "terraform-locks"
+    encrypt        = true
+    }
 }
 
 provider "aws" {
@@ -54,4 +61,5 @@ module "rds" {
   vpc_security_group_ids = [module.security.postgres_sg_id] # ✅ output from security module
   project                = "hydroscope"
   db_password            = "Hydroscope2025!"
+
 }
